@@ -9,20 +9,14 @@ platform :ios do
     puts "🌯 🌯 🌯 Doin' some fastlane 🌯 🌯 🌯"
   end
 
-  desc "Submit TestFlight build to internal testers"
-  lane :testflight_internal do
-    increment_build_number
-    commit_version_bump
-
-    gym(scheme: "StickerPackExtension",
+  desc "Build IPA with janky macOS Sierra Keychain"
+  lane :build_app_with_janky_keychain do
+    gym(scheme: "FastlaneApp",
+        configuration: "Debug",
         silent: true,
         clean: true,
         include_symbols: true,
         include_bitcode: true)
-
-    xcarchive(scheme: "StickerPackExtension")
-
-    pilot
   end
 
   after_all do |lane|
