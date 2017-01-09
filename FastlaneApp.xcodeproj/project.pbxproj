@@ -145,7 +145,7 @@
 				TargetAttributes = {
 					94B7F9081E233FAA00F450CA = {
 						CreatedOnToolsVersion = 8.2.1;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					94B7F91C1E233FAA00F450CA = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -338,6 +338,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FastlaneApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.githubz.FastlaneApp;
@@ -350,6 +351,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FastlaneApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.githubz.FastlaneApp;
@@ -405,6 +407,7 @@
 				94B7F9281E233FAA00F450CA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		94B7F9291E233FAA00F450CA /* Build configuration list for PBXNativeTarget "FastlaneAppTests" */ = {
 			isa = XCConfigurationList;
@@ -413,6 +416,7 @@
 				94B7F92B1E233FAA00F450CA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

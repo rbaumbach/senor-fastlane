@@ -11,12 +11,65 @@ platform :ios do
 
   desc "Build IPA with janky macOS Sierra Keychain"
   lane :build_app_with_janky_keychain do
+    # Be sure that your provisioning profiles are loaded in the app...
+
+    # Now we do the dirty work of handling this crappy macOS Sierra bug
+    # https://openradar.appspot.com/28524119
+
+    # First, let's see if we have the jank keychain already, if we do, then
+    # we delete it
+
+    has_jank_keychain = File.exist? (File.expand_path "~/Library/Keychains/billy_goat_is_janky.keychain-db")
+    delete_keychain(name: "billy_goat_is_janky.keychain") if has_jank_keychain
+
+    # Now let's create the jank keychain
+
+    create_keychain(name: "billy_goat_is_janky.keychain",
+                    timeout: "false",
+                    unlock: "true",
+                    password: "<change-this-to-whatever-you-want>")
+
+    # Ok, we have a temp keychain now, let's add all our certs
+
+    dev-cert_path = File.expand_path "~/wherever-your-certs-are/a-cert-dev.p12"
+    dis-cert_path = File.expand_path "~/wherever-your-certs-are/a-cert-dis.p12"
+
+    import_certificate(keychain_name: "billy_goat_is_janky.keychain",
+                       keychain_password: "<whatever-it-is-you-made-it>"
+                       certificate_path: dev-cert_path,
+                       certificate_password: "<also-change-this-to-whatever-you-want>")
+
+    import_certificate(keychain_name: "billy_goat_is_janky.keychain",
+                       keychain_password: "<whatever-it-is-you-made-it>"
+                       certificate_path: dev-cert_path,
+                       certificate_password: "<also-change-this-to-whatever-you-want>")
+
+    # Since we have a janky keychain, let's unlock it and make it the default keychain
+
+    unlock_keychain(path: "billy_goat_is_janky.keychain",
+                    password: "<Again-enter-it-here>",
+                    set_default: "true")
+
+    # Now we are ready to do a build...
+
     gym(scheme: "FastlaneApp",
-        configuration: "Debug",
         silent: true,
         clean: true,
         include_symbols: true,
         include_bitcode: true)
+
+    # We are done, so let's set the login keychain back as the default, we can do this
+    # with the unlock_keychain action
+
+    unlock_keychain(path: "login",
+                    password: "<login-keychain-password>",
+                    set_default: "true")
+
+    # Finally, we delete the janky keychain
+
+    delete_keychain(name: "billy_goat_is_janky.keychain")
+
+    # =(
   end
 
   after_all do |lane|
