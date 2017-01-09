@@ -81,10 +81,6 @@ platform :ios do
   end
 end
 
-# Things to investigate
-# 1. Using match to handle the certs and provisioning profiles
-
-
 # More information about multiple platforms in fastlane: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Platforms.md
 # All available actions: https://docs.fastlane.tools/actions
 
