@@ -15,6 +15,7 @@ platform :ios do
 
     # Now we do the dirty work of handling this crappy macOS Sierra bug
     # https://openradar.appspot.com/28524119
+    # http://stackoverflow.com/questions/39868578/security-codesign-in-sierra-keychain-ignores-access-control-settings-and-ui-p
 
     # First, let's see if we have the jank keychain already, if we do, then
     # we delete it
@@ -41,9 +42,9 @@ platform :ios do
 
     import_certificate(keychain_name: "billy_goat_is_janky.keychain",
                        keychain_password: "<whatever-it-is-you-made-it>"
-                       certificate_path: dev-cert_path,
+                       certificate_path: dis-cert_path,
                        certificate_password: "<also-change-this-to-whatever-you-want>")
-
+                       
     # Since we have a janky keychain, let's unlock it and make it the default keychain
 
     unlock_keychain(path: "billy_goat_is_janky.keychain",
