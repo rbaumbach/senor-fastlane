@@ -20,36 +20,49 @@ platform :ios do
     # First, let's see if we have the jank keychain already, if we do, then
     # we delete it
 
-    has_jank_keychain = File.exist? (File.expand_path "~/Library/Keychains/billy_goat_is_janky.keychain-db")
-    delete_keychain(name: "billy_goat_is_janky.keychain") if has_jank_keychain
+    janky_keychain_name = "billy_goat_is_janky.keychain"
+
+    if File.exist? (File.expand_path "~/Library/Keychains/#{janky_keychain_name}-db")
+      delete_keychain(name: janky_keychain_name)
+
+      puts "#{janky_keychain_name} has been deleted!"
+    end
 
     # Now let's create the jank keychain
 
-    create_keychain(name: "billy_goat_is_janky.keychain",
+    create_keychain(name: janky_keychain_name,
                     timeout: "false",
                     unlock: "true",
                     password: "<change-this-to-whatever-you-want>")
 
+    puts "#{janky_keychain_name} as been created!"
+
     # Ok, we have a temp keychain now, let's add all our certs
 
-    dev-cert_path = File.expand_path "~/wherever-your-certs-are/a-cert-dev.p12"
-    dis-cert_path = File.expand_path "~/wherever-your-certs-are/a-cert-dis.p12"
+    dev_cert_path = File.expand_path("~/wherever-your-certs-are/a-cert-dev.p12")
+    dis_cert_path = File.expand_path("~/wherever-your-certs-are/a-cert-dis.p12")
 
-    import_certificate(keychain_name: "billy_goat_is_janky.keychain",
-                       keychain_password: "<whatever-it-is-you-made-it>"
-                       certificate_path: dev-cert_path,
+    import_certificate(keychain_name: janky_keychain_name,
+                       keychain_password: "<whatever-it-is-you-made-it>",
+                       certificate_path: dev_cert_path,
                        certificate_password: "<also-change-this-to-whatever-you-want>")
 
-    import_certificate(keychain_name: "billy_goat_is_janky.keychain",
-                       keychain_password: "<whatever-it-is-you-made-it>"
-                       certificate_path: dis-cert_path,
+    puts "Imported #{dev_cert_path} into keychain #{janky_keychain_name}"
+
+    import_certificate(keychain_name: janky_keychain_name,
+                       keychain_password: "<whatever-it-is-you-made-it>",
+                       certificate_path: dis_cert_path,
                        certificate_password: "<also-change-this-to-whatever-you-want>")
-                       
+
+    puts "Imported #{dis_cert_path} into keychain #{janky_keychain_name}"
+
     # Since we have a janky keychain, let's unlock it and make it the default keychain
 
-    unlock_keychain(path: "billy_goat_is_janky.keychain",
+    unlock_keychain(path: janky_keychain_name,
                     password: "<Again-enter-it-here>",
                     set_default: "true")
+
+    puts "Unlocking #{janky_keychain_name} and setting it as the default keychain"
 
     # Now we are ready to do a build...
 
@@ -62,13 +75,22 @@ platform :ios do
     # We are done, so let's set the login keychain back as the default, we can do this
     # with the unlock_keychain action
 
-    unlock_keychain(path: "login",
+    login_keychain = "login"
+
+    unlock_keychain(path: login_keychain,
                     password: "<login-keychain-password>",
                     set_default: "true")
 
+    puts "Unlocking #{login_keychain} and setting it as the default keychain"
+
     # Finally, we delete the janky keychain
 
-    delete_keychain(name: "billy_goat_is_janky.keychain")
+    delete_keychain(name: janky_keychain_name)
+
+    puts "#{janky_keychain_name} has been deleted!"
+
+    puts "The jank is over..."
+    puts ""
 
     # =(
   end
